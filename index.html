@@ -507,6 +507,7 @@
             const phoneNumber = document.getElementById('phone').value;
             const fullPhoneNumber = `${countryCode}${phoneNumber}`;
             const tickets = parseInt(document.getElementById('tickets').value);
+            const totalPrice = (tickets * TICKET_PRICE).toFixed(2);
             
             const formData = {
                 name: document.getElementById('name').value,
