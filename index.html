@@ -506,8 +506,6 @@
             const countryCode = document.getElementById('countryCode').value;
             const phoneNumber = document.getElementById('phone').value;
             const fullPhoneNumber = `${countryCode}${phoneNumber}`;
-            const tickets = document.getElementById('tickets').value;
-            const totalPrice = (tickets * TICKET_PRICE).toFixed(2);
             
             const formData = {
                 name: document.getElementById('name').value,
@@ -515,9 +513,9 @@
                 phone: fullPhoneNumber,
                 show: document.getElementById('show').value,
                 date: document.getElementById('date').value,
-                tickets: tickets,
                 paymentMethod: document.getElementById('payment').value,
-                totalPrice: totalPrice
+                tickets: tickets,
+                totalPrice: parseFloat(totalPrice)
             };
         
             try {
