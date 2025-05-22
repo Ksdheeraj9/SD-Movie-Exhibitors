@@ -266,7 +266,7 @@
     
     <script>
         // Replace this with your Google Apps Script URL
-        const SCRIPT_URL = 'https://script.google.com/macros/s/1MpjLeZT9yiqdNNSWaToJVUjmgd1JDRwfHdsZhixtE7j9tNXJCiQs7q9G/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxtg5chsjn96nhdB9iWWWNOWRkcrgsNc0QiTSkrbPFNbeEbRxRIRcA4vYI_U2xtxfuy/exec';
         const PAYPAL_LINK = 'https://paypal.me/Shivadheeraj?country.x=DE&locale.x=en_US';
         const TICKET_PRICE = 12.00; // Price per ticket in euros
         const BANK_DETAILS = {
@@ -501,47 +501,41 @@
         }
         
         async function submitBooking() {
-            document.getElementById('loading').style.display = 'block';
-            
-            const countryCode = document.getElementById('countryCode').value;
-            const phoneNumber = document.getElementById('phone').value;
-            const fullPhoneNumber = `${countryCode}${phoneNumber}`;
-            const tickets = parseInt(document.getElementById('tickets').value);
-            
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                phone: fullPhoneNumber,
-                show: document.getElementById('show').value,
-                date: document.getElementById('date').value,
-                tickets: tickets,
-                paymentMethod: document.getElementById('payment').value,
-                price: TICKET_PRICE
-            };
-        
-            try {
-                const response = await fetch(`${SCRIPT_URL}?v=${new Date().getTime()}`, {            
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'text/plain;charset=utf-8',
-                    },
-                    body: JSON.stringify(formData)
-                });
-        
-                // Since we're using no-cors mode, we won't get a JSON response
-                // Just check if the request completed
-                if (response.type === 'opaque') {
-                    alert('Booking successful! Thank you for your reservation.');
-                    document.getElementById('bookingForm').reset();
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Unable to process booking. Please try again later.');
-            } finally {
-                document.getElementById('loading').style.display = 'none';
-            }
-        }
+  document.getElementById('loading').style.display = 'block';
+  
+  try {
+    const formData = {
+      name: document.getElementById('name').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      phone: `${document.getElementById('countryCode').value}${document.getElementById('phone').value}`,
+      show: document.getElementById('show').value,
+      date: document.getElementById('date').value,
+      tickets: parseInt(document.getElementById('tickets').value),
+      paymentMethod: document.getElementById('payment').value
+    };
+
+    const response = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    });
+
+    const result = await response.json();
+    
+    if (result.status === 'success') {
+      alert('Booking successful!');
+      document.getElementById('bookingForm').reset();
+      updateTotalPrice();
+    } else {
+      throw new Error(result.message);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert(`Booking failed: ${error.message}`);
+  } finally {
+    document.getElementById('loading').style.display = 'none';
+  }
+}
         
         // Check availability on page load
         async function checkAvailability() {
