@@ -315,6 +315,7 @@
             });
         }
 
+        /*
         // Function to update show times based on selected date
         function updateShowTimes() {
             const dateSelect = document.getElementById('date');
@@ -333,6 +334,27 @@
                 `;
             }
         }
+        */
+
+        // ...existing code...
+        function updateShowTimes() {
+            const dateSelect = document.getElementById('date');
+            const showSelect = document.getElementById('show');
+            const selectedDate = SHOW_DATES.find(sd => sd.date === dateSelect.value);
+        
+            showSelect.innerHTML = `<option value="">Choose a show</option>`;
+        
+            if (selectedDate) {
+                if (selectedDate.tamilShowTime) {
+                    showSelect.innerHTML += `<option value="tamil">Tamil Show (${selectedDate.tamilShowTime})</option>`;
+                }
+                if (selectedDate.teluguShowTime) {
+                    showSelect.innerHTML += `<option value="telugu">Telugu Show (${selectedDate.teluguShowTime})</option>`;
+                }
+                // add more shows if needed
+            }
+        }
+
 
         let currentPaymentMethod = '';
         
