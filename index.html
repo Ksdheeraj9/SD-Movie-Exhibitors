@@ -236,10 +236,10 @@
                 <label for="tickets">Number of Tickets *</label>
                 <input type="number" id="tickets" required min="1" max="10" value="1" class="number-input" onchange="updateTotalPrice()">
                 <div class="ticket-price-info">
-                    Price per ticket: €12.00
+                    Price per ticket: €20.00
                 </div>
                 <div class="total-price" id="totalPrice">
-                    Total: €12.00
+                    Total: €20.00
                 </div>
             </div>
             
@@ -269,7 +269,7 @@
         // Replace this with your Google Apps Script URL
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby4k78Rzj3rwpdvdRg3NeBesdFwahjWvykPGHkptRdhNYKizf56N5bjLL342WWo_d8Y/exec';
         const PAYPAL_LINK = 'https://paypal.me/Shivadheeraj?country.x=DE&locale.x=en_US';
-        const TICKET_PRICE = 12.00; // Price per ticket in euros
+        const TICKET_PRICE = 20.00; // Price per ticket in euros
         const BANK_DETAILS = {
             name: 'SHIVA D. KAMMA',
             iban: 'DE89 7004 0045 0830 6094 00',
@@ -277,17 +277,17 @@
         };
         const SHOW_DATES = [
             {
-                date: '2025-08-15',
-                label: 'Friday, August 15, 2025',
+                date: '2025-08-13',
+                label: 'Wednesday, August 13, 2025',
                 //hindiShowTime: '2:00 PM',
-                teluguShowTime: '8:00 PM'
+                tamilShowTime: '08:45 PM'
             }
             ,
             {
                 date: '2025-08-14',
                 label: 'Thursday, August 14, 2025',
                 //hindiShowTime: '2:00 PM',
-                tamilShowTime: '9:00 PM'
+                teluguShowTime: '8:45 PM'
             }
             // Add more dates as needed
         ];
