@@ -222,13 +222,13 @@
                         
             <div class="form-group">
                 <label for="show">Select Show *</label>
-                <select id="show" required>
+                <select id="show" required onchange="updateTotalPrice()">
                     <option value="">Choose a show</option>
                     <!-- Commenting group date selector
                     <option value="hindi">Hindi Show (2:00 PM)</option>
                     -->
-                    <option value="tamil">Tamil Premier (08:45 PM)</option>
-                    <option value="telugu">Telugu Show (08:45 PM)</option>
+                    <option value="tamil">Tamil Show (09:45 PM) - Tamil Movie Premier</option>
+                    <option value="telugu">Telugu Show (09:45 PM)</option>
                 </select>
             </div>
             
@@ -236,7 +236,7 @@
                 <label for="tickets">Number of Tickets *</label>
                 <input type="number" id="tickets" required min="1" max="10" value="1" class="number-input" onchange="updateTotalPrice()">
                 <div class="ticket-price-info">
-                    Price per ticket: €20.00
+                    Price per ticket: €20.00 (Tamil) / €15.00 (Telugu)
                 </div>
                 <div class="total-price" id="totalPrice">
                     Total: €20.00
@@ -269,7 +269,10 @@
         // Replace this with your Google Apps Script URL
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby4k78Rzj3rwpdvdRg3NeBesdFwahjWvykPGHkptRdhNYKizf56N5bjLL342WWo_d8Y/exec';
         const PAYPAL_LINK = 'https://paypal.me/Shivadheeraj?country.x=DE&locale.x=en_US';
-        const TICKET_PRICE = 20.00; // Price per ticket in euros
+        const TICKET_PRICES = {
+            tamil: 20.00,   // Price for Tamil premier movie
+            telugu: 15.00   // Price for Telugu movie
+        };
         const BANK_DETAILS = {
             name: 'SHIVA D. KAMMA',
             iban: 'DE89 7004 0045 0830 6094 00',
@@ -295,8 +298,14 @@
         // Function to update the total price based on number of tickets
         function updateTotalPrice() {
             const tickets = parseInt(document.getElementById('tickets').value);
-            const totalPrice = (tickets * TICKET_PRICE).toFixed(2);
+            const showType = document.getElementById('show').value;
+            const ticketPrice = TICKET_PRICES[showType] || 20.00; // Default to €20 if no show selected
+            const totalPrice = (tickets * ticketPrice).toFixed(2);
             document.getElementById('totalPrice').textContent = `Total: €${totalPrice}`;
+            
+            // Also update the price info display
+            const priceInfo = document.querySelector('.ticket-price-info');
+            priceInfo.textContent = `Price per ticket: €${ticketPrice.toFixed(2)}`;
         }
 
         // Function to update available dates in the dropdown
@@ -361,12 +370,15 @@
         // Set minimum date to today
         //document.getElementById('date').min = new Date().toISOString().split('T')[0];
         document.getElementById('date').addEventListener('change', updateShowTimes);
+        document.getElementById('show').addEventListener('change', updateTotalPrice);
       
         function showPaymentModal(paymentMethod) {
             const modal = document.getElementById('paymentModal');
             const content = document.getElementById('paymentModalContent');
             const tickets = parseInt(document.getElementById('tickets').value);
-            const totalPrice = (tickets * TICKET_PRICE).toFixed(2);
+            const showType = document.getElementById('show').value;
+            const ticketPrice = TICKET_PRICES[showType] || 20.00;
+            const totalPrice = (tickets * ticketPrice).toFixed(2);
             currentPaymentMethod = paymentMethod;
             
             if (paymentMethod === 'paypal') {
