@@ -249,8 +249,11 @@
             
             <div class="form-group">
                 <label for="payment">Payment Method *</label>
-                <select id="payment" required onchange="updatePay mentField()">
-                    <option value="">Choose payment method</option>
+                
+                <!--select id="payment" required onchange="updatePaymentField()">
+                -->
+                <select id="payment" required onchange="updatePaymentField()">
+                   <option value="">Choose payment method</option>
                     <option value="paypal">PayPal</option>
                     <option value="iban">IBAN Transfer</option>
                     <option value="cash">Pay in Cash at Theatre</option>
@@ -628,7 +631,9 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('show').addEventListener('change', updateTotalPrice);
+            document.getElementById('payment').addEventListener('change', updatePaymentField);
             updateAvailableDates();
+            updatePaymentField();
             updateTotalPrice(); // Initialize the total price display
         });
         
