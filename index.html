@@ -309,8 +309,9 @@
         function updateTotalPrice() {
             const tickets = parseInt(document.getElementById('tickets').value);
             //const totalPrice = (tickets * TICKET_PRICE).toFixed(2);
+            const price = getTicketPrice();
             const totalPrice = (tickets * getTicketPrice()).toFixed(2);
-            //document.getElementById('totalPrice').textContent = `Total: €${totalPrice}`;
+            document.getElementById('totalPrice').textContent = `Total: €${totalPrice}`;
             document.getElementById("pricePerTicket").textContent = `Price per ticket: €${getTicketPrice().toFixed(2)}`;
         }
 
@@ -630,11 +631,11 @@
         };
 
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('show').addEventListener('change', updateTotalPrice);
-            document.getElementById('payment').addEventListener('change', updatePaymentField);
             updateAvailableDates();
             updatePaymentField();
             updateTotalPrice(); // Initialize the total price display
+            document.getElementById('show').addEventListener('change', updateTotalPrice);
+            document.getElementById('payment').addEventListener('change', updatePaymentField);
         });
         
     </script>
