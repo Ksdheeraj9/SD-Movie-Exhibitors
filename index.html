@@ -222,21 +222,25 @@
                         
             <div class="form-group">
                 <label for="show">Select Show *</label>
-                <select id="show" required onchange="updateTotalPrice()">
+                <select id="show" required>
                     <option value="">Choose a show</option>
                     <!-- Commenting group date selector
                     <option value="hindi">Hindi Show (2:00 PM)</option>
                     -->
-                    <option value="tamil">Tamil Premier (09:45 PM)</option>
-                    <option value="telugu">Telugu Show (09:45 PM)</option>
+                    <option value="tamil">Tamil Premier (08:45 PM)</option>
+                    <option value="telugu">Telugu Show (08:45 PM)</option>
                 </select>
             </div>
             
             <div class="form-group">
                 <label for="tickets">Number of Tickets *</label>
                 <input type="number" id="tickets" required min="1" max="10" value="1" class="number-input" onchange="updateTotalPrice()">
-                <div class="ticket-price-info">
-                    Price per ticket: €20.00 (Tamil) / €15.00 (Telugu)
+                <!--div class="ticket-price-info">
+                    Price per ticket: €20.00
+                </div>
+                -->
+                <div class="ticket-price-info" id="pricePerTicket">
+                    Price per ticket: €20.00
                 </div>
                 <div class="total-price" id="totalPrice">
                     Total: €20.00
@@ -245,7 +249,7 @@
             
             <div class="form-group">
                 <label for="payment">Payment Method *</label>
-                <select id="payment" required onchange="updatePaymentField()">
+                <select id="payment" required onchange="updatePay mentField()">
                     <option value="">Choose payment method</option>
                     <option value="paypal">PayPal</option>
                     <option value="iban">IBAN Transfer</option>
@@ -269,10 +273,13 @@
         // Replace this with your Google Apps Script URL
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby4k78Rzj3rwpdvdRg3NeBesdFwahjWvykPGHkptRdhNYKizf56N5bjLL342WWo_d8Y/exec';
         const PAYPAL_LINK = 'https://paypal.me/Shivadheeraj?country.x=DE&locale.x=en_US';
-        const TICKET_PRICES = {
-            tamil: 20.00, 
-            telugu: 15.00 
-        };
+        //const TICKET_PRICE = 20.00; // Price per ticket in euros
+        function getTicketPrice() {
+            const show = document.getElementById('show').value;
+            if (show === 'tamil') return 20.00;
+            if (show === 'telugu') return 15.00;
+            return 20.00; // default fallback
+        }
         const BANK_DETAILS = {
             name: 'SHIVA D. KAMMA',
             iban: 'DE89 7004 0045 0830 6094 00',
@@ -298,14 +305,10 @@
         // Function to update the total price based on number of tickets
         function updateTotalPrice() {
             const tickets = parseInt(document.getElementById('tickets').value);
-            const showType = document.getElementById('show').value;
-            const ticketPrice = TICKET_PRICES[showType] || 20.00; // Default to €20 if no show selected
-            const totalPrice = (tickets * ticketPrice).toFixed(2);
-            document.getElementById('totalPrice').textContent = `Total: €${totalPrice}`;
-            
-            // Also update the price info display
-            const priceInfo = document.querySelector('.ticket-price-info');
-            priceInfo.textContent = `Price per ticket: €${ticketPrice.toFixed(2)}`;
+            //const totalPrice = (tickets * TICKET_PRICE).toFixed(2);
+            const totalPrice = (tickets * getTicketPrice()).toFixed(2);
+            //document.getElementById('totalPrice').textContent = `Total: €${totalPrice}`;
+            document.getElementById("pricePerTicket").textContent = `Price per ticket: €${getTicketPrice().toFixed(2)}`;
         }
 
         // Function to update available dates in the dropdown
@@ -338,7 +341,7 @@
                     <!--
                     <option value="hindi">Hindi Show (${selectedDate.hindiShowTime})</option>
                     -->
-                    <option value="tamil">Tamil Premier (${selectedDate.tamilShowTime})</option>
+                    <option value="tamil">Tamil Show (${selectedDate.tamilShowTime})</option>
                     <option value="telugu">Telugu Show (${selectedDate.teluguShowTime})</option>
                 `;
             }
@@ -370,15 +373,13 @@
         // Set minimum date to today
         //document.getElementById('date').min = new Date().toISOString().split('T')[0];
         document.getElementById('date').addEventListener('change', updateShowTimes);
-        document.getElementById('show').addEventListener('change', updateTotalPrice);
       
         function showPaymentModal(paymentMethod) {
             const modal = document.getElementById('paymentModal');
             const content = document.getElementById('paymentModalContent');
             const tickets = parseInt(document.getElementById('tickets').value);
-            const showType = document.getElementById('show').value;
-            const ticketPrice = TICKET_PRICES[showType] || 20.00;
-            const totalPrice = (tickets * ticketPrice).toFixed(2);
+            //const totalPrice = (tickets * TICKET_PRICE).toFixed(2);
+            const totalPrice = (tickets * getTicketPrice()).toFixed(2);
             currentPaymentMethod = paymentMethod;
             
             if (paymentMethod === 'paypal') {
@@ -543,8 +544,8 @@
             const phoneNumber = document.getElementById('phone').value;
             const fullPhoneNumber = `${countryCode}${phoneNumber}`;
             const tickets = document.getElementById('tickets').value;
-            const totalPrice = (tickets * TICKET_PRICE).toFixed(2);
-            
+            //const totalPrice = (tickets * TICKET_PRICE).toFixed(2);
+            const totalPrice = (tickets * getTicketPrice()).toFixed(2);
             const formData = {
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
@@ -626,6 +627,7 @@
         };
 
         document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('show').addEventListener('change', updateTotalPrice);
             updateAvailableDates();
             updateTotalPrice(); // Initialize the total price display
         });
