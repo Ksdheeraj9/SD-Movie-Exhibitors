@@ -227,7 +227,7 @@
                     <!-- Commenting group date selector
                     <option value="hindi">Hindi Show (2:00 PM)</option>
                     -->
-                    <option value="tamil">Tamil Premier (08:45 PM)</option>
+                    <option value="tamil">Tamil Show (08:45 PM)</option>
                     <option value="telugu">Telugu Show (08:45 PM)</option>
                 </select>
             </div>
@@ -240,10 +240,10 @@
                 </div>
                 -->
                 <div class="ticket-price-info" id="pricePerTicket">
-                    Price per ticket: €20.00
+                    Price per ticket: €18.00
                 </div>
                 <div class="total-price" id="totalPrice">
-                    Total: €20.00
+                    Total: €18.00
                 </div>
             </div>
             
@@ -279,9 +279,9 @@
         //const TICKET_PRICE = 20.00; // Price per ticket in euros
         function getTicketPrice() {
             const show = document.getElementById('show').value;
-            if (show === 'tamil') return 20.00;
+            if (show === 'tamil') return 18.00;
             if (show === 'telugu') return 15.00;
-            return 20.00; // default fallback
+            return 18.00; // default fallback
         }
         const BANK_DETAILS = {
             name: 'SHIVA D. KAMMA',
@@ -290,10 +290,10 @@
         };
         const SHOW_DATES = [
             {
-                date: '2025-08-13',
-                label: 'Wednesday, August 13, 2025',
+                date: '2025-08-14',
+                label: 'Thursday, August 14, 2025',
                 //hindiShowTime: '2:00 PM',
-                tamilShowTime: '09:45 PM'
+                tamilShowTime: '11:00 AM'
             }
             ,
             {
@@ -362,7 +362,7 @@
         
             if (selectedDate) {
                 if (selectedDate.tamilShowTime) {
-                    showSelect.innerHTML += `<option value="tamil">Tamil Premier (${selectedDate.tamilShowTime})</option>`;
+                    showSelect.innerHTML += `<option value="tamil">Tamil Show (${selectedDate.tamilShowTime})</option>`;
                 }
                 if (selectedDate.teluguShowTime) {
                     showSelect.innerHTML += `<option value="telugu">Telugu Show (${selectedDate.teluguShowTime})</option>`;
