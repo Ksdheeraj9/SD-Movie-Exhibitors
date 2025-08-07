@@ -148,6 +148,19 @@
             color: #333;
             margin-top: 10px;
         }
+        .checkbox-label {
+            font-weight: normal;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            line-height: 1.4;
+        }
+        .checkbox-label input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
     </style>
 </head>
 <body>
@@ -261,9 +274,16 @@
             </div>
             
             <div class="form-group" id="acknowledgementDiv" style="display: none;">
-                <label>
+                <label class="checkbox-label">
                     <input type="checkbox" id="acknowledge">
                     I acknowledge that I will pay in cash at the theatre before the show
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="dataConsent" required>
+                    Consent to Data Processing: I agree to the processing of my personal data (name, phone number, email) for the purpose of event registration.
                 </label>
             </div>
             
@@ -352,7 +372,6 @@
         }
         */
 
-        // ...existing code...
         function updateShowTimes() {
             const dateSelect = document.getElementById('date');
             const showSelect = document.getElementById('show');
@@ -514,8 +533,15 @@
                 return false;
             }
             
+            // Validate data consent checkbox
+            if (!document.getElementById('dataConsent').checked) {
+                alert('You must agree to the data processing consent to proceed with booking');
+                return false;
+            }
+            
             return true;
         }
+        
         
         function updatePaymentField() {
             const paymentMethod = document.getElementById('payment').value;
