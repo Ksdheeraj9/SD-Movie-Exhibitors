@@ -301,9 +301,16 @@
         function getTicketPrice() {
             const show = document.getElementById('show').value;
             //if (show === 'tamil') return 18.00;
-            if (show === 'telugu') return 14.00;
-            return 14.00; // default fallback
+            //if (show === 'telugu') return 14.00;
+            //return 14.00; // default fallback
+
+            const ticketCount = parseInt(document.getElementById('tickets').value) || 1;
+            let price = 14.00; // default fallback
+            if (show === 'telugu') price = (ticketCount > 5) ? 12.00 : 14.00;
+            else price = (ticketCount > 5) ? 12.00 : 14.00;
+            return price;
         }
+        
         const BANK_DETAILS = {
             name: 'SHIVA D. KAMMA',
             iban: 'DE89 7004 0045 0830 6094 00',
