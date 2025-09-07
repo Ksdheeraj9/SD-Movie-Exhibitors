@@ -184,7 +184,7 @@
            <!-- <h2>Movie Booking</h2>--> 
         </div>
         
-        <img src="https://static.moviecrow.com/gallery/20250716/248513-Coolie%20Rajinikanth%20Aamir%20Khan%20Nagarjuna%20Upendra%20Soubin%20Shahir%20Shruthi%20Haasan%20Sathyaraj.jpg" alt="Movie Poster" class="poster">
+        <img src="https://pbs.twimg.com/media/GzWbPQSXIAAchG2?format=jpg&name=large" alt="Movie Poster" class="poster">
         
         <form id="bookingForm" onsubmit="return handleSubmit(event)">
             <div class="form-group">
@@ -195,6 +195,7 @@
             <div class="form-group">
                 <label for="email">Email (Optional)</label>
                 <input type="email" id="email" placeholder="Enter your email address">
+                <div id="emailError" class="error">Please enter a valid email address</div>                
             </div>
             
             <div class="form-group">
@@ -239,8 +240,8 @@
                     <option value="">Choose a show</option>
                     <!-- Commenting group date selector
                     <option value="hindi">Hindi Show (2:00 PM)</option>
-                    -->
                     <option value="tamil">Tamil Show (09:45 PM)</option>
+                    -->
                     <option value="telugu">Telugu Show (09:45 PM)</option>
                 </select>
             </div>
@@ -299,7 +300,7 @@
         //const TICKET_PRICE = 20.00; // Price per ticket in euros
         function getTicketPrice() {
             const show = document.getElementById('show').value;
-            if (show === 'tamil') return 18.00;
+            //if (show === 'tamil') return 18.00;
             if (show === 'telugu') return 15.00;
             return 18.00; // default fallback
         }
@@ -310,11 +311,13 @@
         };
         const SHOW_DATES = [
             {
-                date: '2025-08-14',
-                label: 'Thursday, August 14, 2025',
+                date: '2025-09-12',
+                label: 'Friday, September 12, 2025',
                 //hindiShowTime: '2:00 PM',
                 teluguShowTime: '09:45 PM'
             }
+            
+            /*
             ,
             {
                 date: '2025-08-15',
@@ -322,6 +325,7 @@
                 //hindiShowTime: '2:00 PM',
                 tamilShowTime: '09:45 PM',
             }
+            */
             // Add more dates as needed
         ];
 
@@ -364,8 +368,8 @@
                     <option value="">Choose a show</option>
                     <!--
                     <option value="hindi">Hindi Show (${selectedDate.hindiShowTime})</option>
-                    -->
                     <option value="tamil">Tamil Show (${selectedDate.tamilShowTime})</option>
+                    -->
                     <option value="telugu">Telugu Show (${selectedDate.teluguShowTime})</option>
                 `;
             }
@@ -380,9 +384,11 @@
             showSelect.innerHTML = `<option value="">Choose a show</option>`;
         
             if (selectedDate) {
+                /*
                 if (selectedDate.tamilShowTime) {
                     showSelect.innerHTML += `<option value="tamil">Tamil Show (${selectedDate.tamilShowTime})</option>`;
                 }
+                */
                 if (selectedDate.teluguShowTime) {
                     showSelect.innerHTML += `<option value="telugu">Telugu Show (${selectedDate.teluguShowTime})</option>`;
                 }
@@ -466,7 +472,7 @@
                     isValid = true;
                 }
             } else if (countryCode === '+43') {
-                if (phoneNumber.length < 06 || phoneNumber.length > 12) {
+                if (phoneNumber.length < 6 || phoneNumber.length > 12) {
                     errorMessage = 'Austria phone numbers should be 6-12 digits long';
                 } else {
                     isValid = true;
@@ -509,6 +515,18 @@
             
             return isValid;
         }
+
+        function validateEmail() {
+            const emailInput = document.getElementById('email');
+            const emailError = document.getElementById('emailError');
+            const emailValue = emailInput.value.trim();
+            // Simple email regex
+            const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue);
+            emailInput.classList.toggle('invalid', !isValid);
+            emailError.style.display = isValid ? 'none' : 'block';
+            
+            return isValid;
+        }
         
         function validateForm() {
             const name = document.getElementById('name').value;
@@ -516,8 +534,11 @@
                 alert('Please enter your name');
                 return false;
             }
-            
             if (!validatePhoneNumber()) {
+                return false;
+            }
+            if (!validateEmail()) {
+                alert('Please enter a valid email address');
                 return false;
             }
             
@@ -576,15 +597,35 @@
             const tickets = document.getElementById('tickets').value;
             //const totalPrice = (tickets * TICKET_PRICE).toFixed(2);
             const totalPrice = (tickets * getTicketPrice()).toFixed(2);
+            const selectedShow = document.getElementById('show').value;
+            const selectedDateValue = document.getElementById('date').value;
+
+            // Get show label (time) from selected date
+            let showTime = '';
+            let showDateText = '';
+            const selectedDateObj = SHOW_DATES.find(sd => sd.date === selectedDateValue);
+            /*
+            if (selectedShow === 'tamil' && selectedDateObj && selectedDateObj.tamilShowTime) {
+                showTime = selectedDateObj.tamilShowTime;
+            } else
+            */    
+            if (selectedShow === 'telugu' && selectedDateObj && selectedDateObj.teluguShowTime) {
+                showTime = selectedDateObj.teluguShowTime;
+            }
+            showDateText = selectedDateObj ? selectedDateObj.label : selectedDateValue;
+
             const formData = {
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
                 phone: fullPhoneNumber,
-                show: document.getElementById('show').value,
-                date: document.getElementById('date').value,
+                show: selectedShow,
+                showTime: showTime,
+                date: selectedDateValue,
+                dateText: showDateText,
                 paymentMethod: document.getElementById('payment').value,
                 ticketQuantity: tickets,
-                totalPrice: totalPrice
+                totalPrice: totalPrice,
+                sendEmail: true //Script to send email
             };
         
             try {
@@ -600,7 +641,7 @@
                 // Since we're using no-cors mode, we won't get a JSON response
                 // Just check if the request completed
                 if (response.type === 'opaque') {
-                    alert('Booking successful! Thank you for your reservation. See you at the movie!!!');
+                    alert('Booking successful! Thank you for your reservation.  You will receive a confirmation email shortly!!!');
                     document.getElementById('bookingForm').reset();
                 }
             } catch (error) {
@@ -662,6 +703,7 @@
             updateTotalPrice(); // Initialize the total price display
             document.getElementById('show').addEventListener('change', updateTotalPrice);
             document.getElementById('payment').addEventListener('change', updatePaymentField);
+            document.getElementById('email').addEventListener('input', validateEmail);
         });
         
     </script>
