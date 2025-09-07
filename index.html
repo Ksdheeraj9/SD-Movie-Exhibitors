@@ -161,6 +161,30 @@
             flex-shrink: 0;
             margin-top: 2px;
         }
+        .consent-box {
+          background: #f9f9ff;
+          border: 1px solid #ddd;
+          border-radius: 12px;
+          padding: 16px;
+          margin-bottom: 12px;
+          font-size: 14px;
+          line-height: 1.5;
+          color: #444;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        
+        .consent-title {
+          font-weight: 600;
+          margin-bottom: 8px;
+          display: flex;
+          align-items: center;
+        }
+        
+        .consent-icon {
+          font-size: 18px;
+          margin-right: 6px;
+          color: #4a4a9f;
+        }
     </style>
 </head>
 <body>
@@ -282,15 +306,25 @@
             </div>
 
             <div class="form-group">
-                <label class="checkbox-label">
-                    <input type="checkbox" id="dataConsent" required>
-                    <strong>Data Protection Notice:</strong> Your personal data (e.g., name, contact information) is collected solely for the purpose of organizing and managing this event. Your data will not be shared, published, or used for any other purpose. Data will be deleted after the event. By registering, you consent to this data processing. You may withdraw your consent at any time by contacting us.
-                    <br>
-                    <strong> I agree to the collection and use of my data as described above.</strong>
-                </label>
+              <div class="consent-box">
+                <p class="consent-title">
+                  <span class="consent-icon">🔒</span> Data Protection Notice
+                </p>
+                <p class="consent-text">
+                  Your personal data (e.g., name, contact information) will be used
+                  solely for organizing and managing this event. It will not be shared,
+                  published, or used for any other purpose, and will be deleted after the event.  
+                  By registering, you consent to this data processing.  
+                  You may withdraw your consent at any time by contacting us.
+                </p>
+              </div>
+            
+              <label class="checkbox-label">
+                <input type="checkbox" id="dataConsent" required>
+                <strong>I agree to the collection and use of my data as described above.</strong>
+              </label>
             </div>
-
-            <button type="submit">Book Now</button>
+        <button type="submit">Book Now</button>
         </form>
         <div id="loading" class="loading">Processing your booking...</div>
     </div>
