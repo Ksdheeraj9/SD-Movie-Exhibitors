@@ -354,8 +354,8 @@
         };
         const SHOW_DATES = [
             {
-                date: '2025-12-06',
-                label: 'Saturday, December 06, 2025',
+                date: '2025-12-13',
+                label: 'Saturday, December 13, 2025',
                 //hindiShowTime: '2:00 PM',
                 teluguShowTime: '11:30 AM'
             }
@@ -398,27 +398,6 @@
             });
         }
 
-        /*
-        // Function to update show times based on selected date
-        function updateShowTimes() {
-            const dateSelect = document.getElementById('date');
-            const showSelect = document.getElementById('show');
-            const selectedDate = SHOW_DATES.find(sd => sd.date === dateSelect.value);
-            
-            if (selectedDate) {
-                // Update show options with specific times
-                showSelect.innerHTML = `
-                    <option value="">Choose a show</option>
-                    <!--
-                    <option value="hindi">Hindi Show (${selectedDate.hindiShowTime})</option>
-                    <option value="tamil">Tamil Show (${selectedDate.tamilShowTime})</option>
-                    -->
-                    <option value="telugu">Telugu Show (${selectedDate.teluguShowTime})</option>
-                `;
-            }
-        }
-        */
-
         function updateShowTimes() {
             const dateSelect = document.getElementById('date');
             const showSelect = document.getElementById('show');
@@ -442,8 +421,7 @@
 
         let currentPaymentMethod = '';
         
-        // Set minimum date to today
-        //document.getElementById('date').min = new Date().toISOString().split('T')[0];
+        //Set minimum date to today
         document.getElementById('date').addEventListener('change', updateShowTimes);
       
         function showPaymentModal(paymentMethod) {
@@ -638,20 +616,14 @@
             const phoneNumber = document.getElementById('phone').value;
             const fullPhoneNumber = `${countryCode}${phoneNumber}`;
             const tickets = document.getElementById('tickets').value;
-            //const totalPrice = (tickets * TICKET_PRICE).toFixed(2);
             const totalPrice = (tickets * getTicketPrice()).toFixed(2);
             const selectedShow = document.getElementById('show').value;
             const selectedDateValue = document.getElementById('date').value;
 
-            // Get show label (time) from selected date
             let showTime = '';
             let showDateText = '';
             const selectedDateObj = SHOW_DATES.find(sd => sd.date === selectedDateValue);
-            /*
-            if (selectedShow === 'tamil' && selectedDateObj && selectedDateObj.tamilShowTime) {
-                showTime = selectedDateObj.tamilShowTime;
-            } else
-            */    
+  
             if (selectedShow === 'telugu' && selectedDateObj && selectedDateObj.teluguShowTime) {
                 showTime = selectedDateObj.teluguShowTime;
             }
@@ -681,8 +653,6 @@
                     body: JSON.stringify(formData)
                 });
         
-                // Since we're using no-cors mode, we won't get a JSON response
-                // Just check if the request completed
                 if (response.type === 'opaque') {
                     alert('Booking successful! Thank you for your reservation.  You will receive a confirmation email shortly!!!');
                     document.getElementById('bookingForm').reset();
@@ -695,7 +665,6 @@
             }
         }
         
-        // Check availability on page load
         async function checkAvailability() {
             try {
                 console.log('Checking availability...');
@@ -731,7 +700,6 @@
             }
         }
         
-        // Close modal if user clicks outside of it
         window.onclick = function(event) {
             const modal = document.getElementById('paymentModal');
             const content = document.querySelector('.modal-content');
