@@ -266,7 +266,7 @@
                     <option value="hindi">Hindi Show (2:00 PM)</option>
                     <option value="tamil">Tamil Show (09:45 PM)</option>
                     -->
-                    <option value="telugu">Telugu Show (11:30 AM)</option>
+                    <option value="telugu">Telugu Show (19:45 PM)</option>
                 </select>
             </div>
             
@@ -278,10 +278,10 @@
                 </div>
                 -->
                 <div class="ticket-price-info" id="pricePerTicket">
-                    Price per ticket: €14.00
+                    Price per ticket: €12.00
                 </div>
                 <div class="total-price" id="totalPrice">
-                    Total: €14.00
+                    Total: €12.00
                 </div>
             </div>
             
@@ -294,16 +294,18 @@
                    <option value="">Choose payment method</option>
                     <option value="paypal">PayPal</option>
                     <option value="iban">IBAN Transfer</option>
-                    <option value="cash">Pay in Cash at Theatre</option>
+                  <!--  <option value="cash">Pay in Cash at Theatre</option> 
+                  -->
                 </select>
             </div>
-            
+            <!--  
             <div class="form-group" id="acknowledgementDiv" style="display: none;">
                 <label class="checkbox-label">
                     <input type="checkbox" id="acknowledge">
                     I acknowledge that I will pay in cash at the theatre before the show
                 </label>
             </div>
+            -->
 
             <div class="form-group">
               <div class="consent-box">
@@ -341,9 +343,9 @@
             //return 14.00; // default fallback
 
             const ticketCount = parseInt(document.getElementById('tickets').value) || 1;
-            let price = 18.00; // default fallback
-            if (show === 'telugu') price = (ticketCount > 4) ? 13.00 : 15.00;
-            else price = (ticketCount > 4) ? 13.00 : 15.00;
+            let price = 12.00; // default fallback
+            if (show === 'telugu') price = (ticketCount > 4) ? 12.00 : 12.00;
+            else price = (ticketCount > 4) ? 12.00 : 12.00;
             return price;
         }
         
@@ -568,12 +570,13 @@
                 alert('Please enter a number of tickets between 1 and 10');
                 return false;
             }
-            
+            /*
             const payment = document.getElementById('payment').value;
             if (payment === 'cash' && !document.getElementById('acknowledge').checked) {
                 alert('Please acknowledge the cash payment option');
                 return false;
             }
+            */
             
             // Validate data consent checkbox
             if (!document.getElementById('dataConsent').checked) {
@@ -584,12 +587,13 @@
             return true;
         }
         
-        
+        /*
         function updatePaymentField() {
             const paymentMethod = document.getElementById('payment').value;
             const acknowledgement = document.getElementById('acknowledgementDiv');
             acknowledgement.style.display = paymentMethod === 'cash' ? 'block' : 'none';
         }
+        */
         
         async function handleSubmit(event) {
             event.preventDefault();
