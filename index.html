@@ -278,7 +278,7 @@
                 </div>
                 -->
                 <div class="ticket-price-info" id="pricePerTicket">
-                    Price per ticket: €12.00
+                    Early bird price per ticket: €12.00
                 </div>
                 <div class="total-price" id="totalPrice">
                     Total: €12.00
@@ -381,7 +381,7 @@
             const price = getTicketPrice();
             const totalPrice = (tickets * getTicketPrice()).toFixed(2);
             document.getElementById('totalPrice').textContent = `Total: €${totalPrice}`;
-            document.getElementById("pricePerTicket").textContent = `Price per ticket: €${getTicketPrice().toFixed(2)}`;
+            document.getElementById("pricePerTicket").textContent = `Early bird price per ticket: €${getTicketPrice().toFixed(2)}`;
         }
 
         // Function to update available dates in the dropdown
