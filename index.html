@@ -783,6 +783,18 @@
                 const totalPrice = (tickets * price).toFixed(2);
                 const comboSelect = document.getElementById('comboSelect');
                 const selectedCombo = COMBO_OFFERS.find(c => c.value === comboSelect.value);
+
+                // Get dates for combo shows
+                let comboDates = [];
+                selectedCombo.shows.forEach(showValue => {
+                    for (let dateObj of SHOW_DATES) {
+                        const show = dateObj.shows.find(s => s.value === showValue);
+                        if (show) {
+                            comboDates.push(dateObj.date);
+                            break;
+                        }
+                    }
+                });
                 
                 formData = {
                     name: document.getElementById('name').value,
@@ -790,7 +802,8 @@
                     phone: fullPhoneNumber,
                     bookingType: 'combo',
                     combo: selectedCombo.label,
-                    shows: selectedCombo.shows.join(', '),
+                    show: selectedCombo.shows.join(', '),
+                    date: comboDates.join(', '),
                     paymentMethod: document.getElementById('payment').value,
                     ticketQuantity: tickets,
                     totalPrice: totalPrice,
