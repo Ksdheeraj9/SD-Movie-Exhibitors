@@ -187,6 +187,71 @@
           margin-right: 6px;
           color: #4a4a9f;
         }
+        
+        .combo-info {
+            background-color: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .combo-info h3 {
+            margin-top: 0;
+            color: #856404;
+        }
+        
+        .combo-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .combo-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #ffeaa7;
+        }
+        
+        .combo-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .show-type-selector {
+            margin-bottom: 20px;
+        }
+        
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .radio-option:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .radio-option input[type="radio"] {
+            width: auto;
+            margin-right: 10px;
+        }
+        
+        .radio-option input[type="radio"]:checked + label {
+            font-weight: bold;
+        }
+        
+        .radio-option.selected {
+            border-color: #4CAF50;
+            background-color: #e8f5e9;
+        }
     </style>
 </head>
 <body>
@@ -213,6 +278,70 @@
         <img src="https://raw.githubusercontent.com/Ksdheeraj9/SD-Movie-Exhibitors/refs/heads/main/poster.jpeg" alt="Movie Poster" class="poster">
         
         <form id="bookingForm" onsubmit="return handleSubmit(event)">
+            <!-- Booking Type Selection -->
+            <div class="form-group show-type-selector">
+                <label>Booking Type *</label>
+                <div class="radio-group">
+                    <div class="radio-option" onclick="selectBookingType('single')">
+                        <input type="radio" id="single" name="bookingType" value="single" checked onchange="updateBookingType()">
+                        <label for="single">Single Movie Ticket</label>
+                    </div>
+                    <div class="radio-option" onclick="selectBookingType('combo')">
+                        <input type="radio" id="combo" name="bookingType" value="combo" onchange="updateBookingType()">
+                        <label for="combo">Combo Offer (2 Movies)</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Single Movie Selection -->
+            <div id="singleMovieSection">
+                <div class="form-group">
+                    <label for="date">Select Date *</label>
+                    <select id="date" required>
+                        <option value="">Choose a date</option>
+                    </select>
+                </div>
+                            
+                <div class="form-group">
+                    <label for="show">Select Show *</label>
+                    <select id="show" required>
+                        <option value="">Choose a show</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="tickets">Number of Tickets *</label>
+                    <input type="number" id="tickets" required min="1" max="10" value="1" class="number-input" onchange="updateTotalPrice()">
+                    <div class="ticket-price-info" id="pricePerTicket">
+                        Price per ticket: €0.00
+                    </div>
+                    <div class="total-price" id="totalPrice">
+                        Total: €0.00
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Combo Selection -->
+            <div id="comboSection" style="display: none;">
+                <div class="form-group">
+                    <label for="comboSelect">Select Combo Offer *</label>
+                    <select id="comboSelect">
+                        <option value="">Choose a combo</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="comboTickets">Number of Combo Sets *</label>
+                    <input type="number" id="comboTickets" min="1" max="10" value="1" class="number-input" onchange="updateTotalPrice()">
+                    <div class="ticket-price-info" id="comboPriceInfo">
+                        Price per combo: €0.00
+                    </div>
+                    <div class="total-price" id="comboTotalPrice">
+                        Total: €0.00
+                    </div>
+                </div>
+            </div>
+            
             <div class="form-group">
                 <label for="name">Name *</label>
                 <input type="text" id="name" required placeholder="Enter your full name">
@@ -220,7 +349,7 @@
             
             <div class="form-group">
                 <label for="email">Email *</label>
-                <input type="email" id="email" placeholder="Enter your email address">
+                <input type="email" id="email" required placeholder="Enter your email address">
                 <div id="emailError" class="error">Please enter a valid email address</div>                
             </div>
             
@@ -246,68 +375,15 @@
                     Please enter a valid phone number
                 </div>
             </div>
-
-           <!-- Commenting group date selector
-             <div class="form-group">
-                <label for="date">Select Date *</label>
-                <input type="date" id="date" required>
-            </div>
-            -->
-            <div class="form-group">
-                <label for="date">Select Date *</label>
-                <select id="date" required>
-                    <option value="">Choose a date</option>
-                </select>
-            </div>
-                        
-            <div class="form-group">
-                <label for="show">Select Show *</label>
-                <select id="show" required>
-                    <option value="">Choose a show</option>
-                    <!-- Commenting group date selector
-                    <option value="hindi">Hindi Show (2:00 PM)</option>
-                    <option value="tamil">Tamil Show (09:45 PM)</option>
-                    -->
-                    <option value="telugu">Telugu Show (19:45 PM)</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="tickets">Number of Tickets *</label>
-                <input type="number" id="tickets" required min="1" max="10" value="1" class="number-input" onchange="updateTotalPrice()">
-                <!--div class="ticket-price-info">
-                    Price per ticket: €20.00
-                </div>
-                -->
-                <div class="ticket-price-info" id="pricePerTicket">
-                    Early bird price per ticket: €12.00
-                </div>
-                <div class="total-price" id="totalPrice">
-                    Total: €12.00
-                </div>
-            </div>
             
             <div class="form-group">
                 <label for="payment">Payment Method *</label>
-                
-                <!--select id="payment" required onchange="updatePaymentField()">
-                -->
                 <select id="payment" required onchange="updatePaymentField()">
                    <option value="">Choose payment method</option>
                     <option value="paypal">PayPal</option>
                     <option value="iban">IBAN Transfer</option>
-                  <!--  <option value="cash">Pay in Cash at Theatre</option> 
-                  -->
                 </select>
             </div>
-            <!--  
-            <div class="form-group" id="acknowledgementDiv" style="display: none;">
-                <label class="checkbox-label">
-                    <input type="checkbox" id="acknowledge">
-                    I acknowledge that I will pay in cash at the theatre before the show
-                </label>
-            </div>
-            -->
 
             <div class="form-group">
               <div class="consent-box">
@@ -334,74 +410,144 @@
     </div>
     
     <script>
-        // Replace this with your Google Apps Script URL
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby4k78Rzj3rwpdvdRg3NeBesdFwahjWvykPGHkptRdhNYKizf56N5bjLL342WWo_d8Y/exec';
         const PAYPAL_LINK = 'https://paypal.me/Shivadheeraj?country.x=DE&locale.x=en_US';
-        //const TICKET_PRICE = 20.00; // Price per ticket in euros
-        function getTicketPrice() {
-            const show = document.getElementById('show').value;
-            //if (show === 'tamil') return 18.00;
-            //if (show === 'telugu') return 14.00;
-            //return 14.00; // default fallback
-
-            const ticketCount = parseInt(document.getElementById('tickets').value) || 1;
-            let price = 12.00; // default fallback
-            if (show === 'telugu') price = (ticketCount > 4) ? 12.00 : 12.00;
-            else price = (ticketCount > 4) ? 12.00 : 12.00;
-            return price;
-        }
         
         const BANK_DETAILS = {
             name: 'SHIVA D. KAMMA',
             iban: 'DE89 7004 0045 0830 6094 00',
             bic: 'COBADEFFXXX'
         };
+        
         const SHOW_DATES = [
             {
-                date: '2026-01-11',
-                label: 'Sunday, January 11, 2026',
-                //hindiShowTime: '2:00 PM',
-                teluguShowTime: '19:45 PM'
-            }
-            
-            /*
-            ,
+                date: '2026-01-08',
+                label: 'Wednesday, January 08, 2026',
+                shows: [
+                    { value: 'rajasaab-premiere', label: 'RajaSaab - Premiere (21:45 Uhr)', price: 20.00, movie: 'RajaSaab' }
+                ]
+            },
             {
-                date: '2025-08-15',
-                label: 'Friday, August 15, 2025',
-                //hindiShowTime: '2:00 PM',
-                tamilShowTime: '09:45 PM',
+                date: '2026-01-10',
+                label: 'Friday, January 10, 2026',
+                shows: [
+                    { value: 'rajasaab-weekend', label: 'RajaSaab - Weekend Show (11:00 Uhr)', price: 18.00, movie: 'RajaSaab' }
+                ]
+            },
+            {
+                date: '2026-01-11',
+                label: 'Saturday, January 11, 2026',
+                shows: [
+                    { value: 'msvg-premiere', label: 'Mana Shankara Varaprasad Gaaru - Premiere (20:00 Uhr)', price: 15.00, movie: 'Mana Shankara Varaprasad Gaaru' }
+                ]
             }
-            */
-            // Add more dates as needed
         ];
-
-        // Function to update the total price based on number of tickets
-        function updateTotalPrice() {
-            const tickets = parseInt(document.getElementById('tickets').value);
-            //const totalPrice = (tickets * TICKET_PRICE).toFixed(2);
-            const price = getTicketPrice();
-            const totalPrice = (tickets * getTicketPrice()).toFixed(2);
-            document.getElementById('totalPrice').textContent = `Total: €${totalPrice}`;
-            document.getElementById("pricePerTicket").textContent = `Early bird price per ticket: €${getTicketPrice().toFixed(2)}`;
+        
+        const COMBO_OFFERS = [
+            {
+                value: 'combo1',
+                label: 'RajaSaab (Premiere) + Mana Shankara Varaprasad Gaaru (Premiere)',
+                price: 30.00,
+                description: '2 Movies for €30',
+                shows: ['rajasaab-premiere', 'msvg-premiere']
+            },
+            {
+                value: 'combo2',
+                label: 'RajaSaab (Weekend) + Mana Shankara Varaprasad Gaaru (Premiere)',
+                price: 28.00,
+                description: '2 Movies for €28',
+                shows: ['rajasaab-weekend', 'msvg-premiere']
+            }
+        ];
+        
+        function selectBookingType(type) {
+            document.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            document.getElementById(type).checked = true;
+            updateBookingType();
         }
-
-        // Function to update available dates in the dropdown
+        
+        function updateBookingType() {
+            const bookingType = document.querySelector('input[name="bookingType"]:checked').value;
+            const singleSection = document.getElementById('singleMovieSection');
+            const comboSection = document.getElementById('comboSection');
+            
+            if (bookingType === 'single') {
+                singleSection.style.display = 'block';
+                comboSection.style.display = 'none';
+                document.getElementById('date').required = true;
+                document.getElementById('show').required = true;
+                document.getElementById('tickets').required = true;
+                document.getElementById('comboSelect').required = false;
+                document.getElementById('comboTickets').required = false;
+            } else {
+                singleSection.style.display = 'none';
+                comboSection.style.display = 'block';
+                document.getElementById('date').required = false;
+                document.getElementById('show').required = false;
+                document.getElementById('tickets').required = false;
+                document.getElementById('comboSelect').required = true;
+                document.getElementById('comboTickets').required = true;
+                populateComboOffers();
+            }
+            updateTotalPrice();
+        }
+        
+        function populateComboOffers() {
+            const comboSelect = document.getElementById('comboSelect');
+            comboSelect.innerHTML = '<option value="">Choose a combo</option>';
+            COMBO_OFFERS.forEach(combo => {
+                comboSelect.innerHTML += `<option value="${combo.value}" data-price="${combo.price}">${combo.label} - €${combo.price.toFixed(2)}</option>`;
+            });
+        }
+        
+        function getTicketPrice() {
+            const bookingType = document.querySelector('input[name="bookingType"]:checked').value;
+            
+            if (bookingType === 'combo') {
+                const comboSelect = document.getElementById('comboSelect');
+                const selectedOption = comboSelect.options[comboSelect.selectedIndex];
+                return selectedOption ? parseFloat(selectedOption.dataset.price) || 0 : 0;
+            } else {
+                const showSelect = document.getElementById('show');
+                const selectedShow = showSelect.value;
+                
+                for (let dateObj of SHOW_DATES) {
+                    const show = dateObj.shows.find(s => s.value === selectedShow);
+                    if (show) return show.price;
+                }
+                return 0;
+            }
+        }
+        
+        function updateTotalPrice() {
+            const bookingType = document.querySelector('input[name="bookingType"]:checked').value;
+            const price = getTicketPrice();
+            
+            if (bookingType === 'combo') {
+                const tickets = parseInt(document.getElementById('comboTickets').value) || 1;
+                const totalPrice = (tickets * price).toFixed(2);
+                document.getElementById('comboPriceInfo').textContent = `Price per combo: €${price.toFixed(2)}`;
+                document.getElementById('comboTotalPrice').textContent = `Total: €${totalPrice}`;
+            } else {
+                const tickets = parseInt(document.getElementById('tickets').value) || 1;
+                const totalPrice = (tickets * price).toFixed(2);
+                document.getElementById('pricePerTicket').textContent = `Price per ticket: €${price.toFixed(2)}`;
+                document.getElementById('totalPrice').textContent = `Total: €${totalPrice}`;
+            }
+        }
+        
         function updateAvailableDates() {
             const dateSelect = document.getElementById('date');
             dateSelect.innerHTML = '<option value="">Choose a date</option>';
             
-            // Add each show date as an option
             SHOW_DATES.forEach(showDate => {
-                // Only add dates that haven't passed
                 if (new Date(showDate.date) >= new Date().setHours(0, 0, 0, 0)) {
-                    dateSelect.innerHTML += `
-                        <option value="${showDate.date}">${showDate.label}</option>
-                    `;
+                    dateSelect.innerHTML += `<option value="${showDate.date}">${showDate.label}</option>`;
                 }
             });
         }
-
+        
         function updateShowTimes() {
             const dateSelect = document.getElementById('date');
             const showSelect = document.getElementById('show');
@@ -410,30 +556,39 @@
             showSelect.innerHTML = `<option value="">Choose a show</option>`;
         
             if (selectedDate) {
-                /*
-                if (selectedDate.tamilShowTime) {
-                    showSelect.innerHTML += `<option value="tamil">Tamil Show (${selectedDate.tamilShowTime})</option>`;
-                }
-                */
-                if (selectedDate.teluguShowTime) {
-                    showSelect.innerHTML += `<option value="telugu">Telugu Show (${selectedDate.teluguShowTime})</option>`;
-                }
-                // add more shows if needed
+                selectedDate.shows.forEach(show => {
+                    showSelect.innerHTML += `<option value="${show.value}" data-price="${show.price}">${show.label} - €${show.price.toFixed(2)}</option>`;
+                });
             }
         }
-
-
+        
         let currentPaymentMethod = '';
         
-        //Set minimum date to today
         document.getElementById('date').addEventListener('change', updateShowTimes);
+        document.getElementById('show').addEventListener('change', updateTotalPrice);
+        document.getElementById('comboSelect').addEventListener('change', updateTotalPrice);
       
         function showPaymentModal(paymentMethod) {
             const modal = document.getElementById('paymentModal');
             const content = document.getElementById('paymentModalContent');
-            const tickets = parseInt(document.getElementById('tickets').value);
-            //const totalPrice = (tickets * TICKET_PRICE).toFixed(2);
-            const totalPrice = (tickets * getTicketPrice()).toFixed(2);
+            const bookingType = document.querySelector('input[name="bookingType"]:checked').value;
+            const price = getTicketPrice();
+            let tickets, totalPrice, bookingDetails;
+            
+            if (bookingType === 'combo') {
+                tickets = parseInt(document.getElementById('comboTickets').value);
+                totalPrice = (tickets * price).toFixed(2);
+                const comboSelect = document.getElementById('comboSelect');
+                const selectedCombo = comboSelect.options[comboSelect.selectedIndex].text;
+                bookingDetails = `<p><strong>Combo:</strong> ${selectedCombo}</p><p><strong>Number of Sets:</strong> ${tickets}</p>`;
+            } else {
+                tickets = parseInt(document.getElementById('tickets').value);
+                totalPrice = (tickets * price).toFixed(2);
+                const showSelect = document.getElementById('show');
+                const selectedShow = showSelect.options[showSelect.selectedIndex].text;
+                bookingDetails = `<p><strong>Show:</strong> ${selectedShow}</p><p><strong>Number of Tickets:</strong> ${tickets}</p>`;
+            }
+            
             currentPaymentMethod = paymentMethod;
             
             if (paymentMethod === 'paypal') {
@@ -441,7 +596,7 @@
                     <p>You will be redirected to PayPal for payment. Would you like to proceed?</p>
                     <div class="payment-info">
                         <h3>Payment Details:</h3>
-                        <p><strong>Number of Tickets: ${tickets}</strong></p>
+                        ${bookingDetails}
                         <p><strong>Amount: €${totalPrice}</strong></p>
                         <p><strong>PayPal ID: ksdheeraj143@gmail.com</strong></p>
                     </div>
@@ -453,10 +608,10 @@
                         <p><strong>Name:</strong> ${BANK_DETAILS.name}</p>
                         <p><strong>IBAN:</strong> ${BANK_DETAILS.iban}</p>
                         <p><strong>BIC:</strong> ${BANK_DETAILS.bic}</p>
-                        <p><strong>Number of Tickets: ${tickets}</strong></p>
+                        ${bookingDetails}
                         <p><strong>Amount: €${totalPrice}</strong></p>
                     </div>
-                    <p style="color:red;">Please make sure to include your <strong>full name in the transfer reference<strong>.</p>
+                    <p style="color:red;">Please make sure to include your <strong>full name in the transfer reference</strong>.</p>
                     <p>Click "Proceed" to confirm that you will make the transfer.</p>
                 `;
             }
@@ -545,7 +700,6 @@
             const emailInput = document.getElementById('email');
             const emailError = document.getElementById('emailError');
             const emailValue = emailInput.value.trim();
-            // Simple email regex
             const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue);
             emailInput.classList.toggle('invalid', !isValid);
             emailError.style.display = isValid ? 'none' : 'block';
@@ -567,20 +721,26 @@
                 return false;
             }
             
-            const tickets = parseInt(document.getElementById('tickets').value);
-            if (isNaN(tickets) || tickets < 1 || tickets > 10) {
-                alert('Please enter a number of tickets between 1 and 10');
-                return false;
-            }
-            /*
-            const payment = document.getElementById('payment').value;
-            if (payment === 'cash' && !document.getElementById('acknowledge').checked) {
-                alert('Please acknowledge the cash payment option');
-                return false;
-            }
-            */
+            const bookingType = document.querySelector('input[name="bookingType"]:checked').value;
             
-            // Validate data consent checkbox
+            if (bookingType === 'single') {
+                const tickets = parseInt(document.getElementById('tickets').value);
+                if (isNaN(tickets) || tickets < 1 || tickets > 10) {
+                    alert('Please enter a number of tickets between 1 and 10');
+                    return false;
+                }
+            } else {
+                const comboTickets = parseInt(document.getElementById('comboTickets').value);
+                if (isNaN(comboTickets) || comboTickets < 1 || comboTickets > 10) {
+                    alert('Please enter a number of combo sets between 1 and 10');
+                    return false;
+                }
+                if (!document.getElementById('comboSelect').value) {
+                    alert('Please select a combo offer');
+                    return false;
+                }
+            }
+            
             if (!document.getElementById('dataConsent').checked) {
                 alert('You must agree to the data processing consent to proceed with booking');
                 return false;
@@ -588,14 +748,6 @@
             
             return true;
         }
-        
-        /*
-        function updatePaymentField() {
-            const paymentMethod = document.getElementById('payment').value;
-            const acknowledgement = document.getElementById('acknowledgementDiv');
-            acknowledgement.style.display = paymentMethod === 'cash' ? 'block' : 'none';
-        }
-        */
         
         async function handleSubmit(event) {
             event.preventDefault();
@@ -621,33 +773,65 @@
             const countryCode = document.getElementById('countryCode').value;
             const phoneNumber = document.getElementById('phone').value;
             const fullPhoneNumber = `${countryCode}${phoneNumber}`;
-            const tickets = document.getElementById('tickets').value;
-            const totalPrice = (tickets * getTicketPrice()).toFixed(2);
-            const selectedShow = document.getElementById('show').value;
-            const selectedDateValue = document.getElementById('date').value;
+            const bookingType = document.querySelector('input[name="bookingType"]:checked').value;
+            const price = getTicketPrice();
+            
+            let formData;
+            
+            if (bookingType === 'combo') {
+                const tickets = document.getElementById('comboTickets').value;
+                const totalPrice = (tickets * price).toFixed(2);
+                const comboSelect = document.getElementById('comboSelect');
+                const selectedCombo = COMBO_OFFERS.find(c => c.value === comboSelect.value);
+                
+                formData = {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    phone: fullPhoneNumber,
+                    bookingType: 'combo',
+                    combo: selectedCombo.label,
+                    shows: selectedCombo.shows.join(', '),
+                    paymentMethod: document.getElementById('payment').value,
+                    ticketQuantity: tickets,
+                    totalPrice: totalPrice,
+                    sendEmail: true
+                };
+            } else {
+                const tickets = document.getElementById('tickets').value;
+                const totalPrice = (tickets * price).toFixed(2);
+                const selectedShow = document.getElementById('show').value;
+                const selectedDateValue = document.getElementById('date').value;
+                
+                let showTime = '';
+                let showDateText = '';
+                let movieName = '';
+                const selectedDateObj = SHOW_DATES.find(sd => sd.date === selectedDateValue);
+                
+                if (selectedDateObj) {
+                    const show = selectedDateObj.shows.find(s => s.value === selectedShow);
+                    if (show) {
+                        showTime = show.label;
+                        movieName = show.movie;
+                    }
+                    showDateText = selectedDateObj.label;
+                }
 
-            let showTime = '';
-            let showDateText = '';
-            const selectedDateObj = SHOW_DATES.find(sd => sd.date === selectedDateValue);
-  
-            if (selectedShow === 'telugu' && selectedDateObj && selectedDateObj.teluguShowTime) {
-                showTime = selectedDateObj.teluguShowTime;
+                formData = {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    phone: fullPhoneNumber,
+                    bookingType: 'single',
+                    movie: movieName,
+                    show: selectedShow,
+                    showTime: showTime,
+                    date: selectedDateValue,
+                    dateText: showDateText,
+                    paymentMethod: document.getElementById('payment').value,
+                    ticketQuantity: tickets,
+                    totalPrice: totalPrice,
+                    sendEmail: true
+                };
             }
-            showDateText = selectedDateObj ? selectedDateObj.label : selectedDateValue;
-
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                phone: fullPhoneNumber,
-                show: selectedShow,
-                showTime: showTime,
-                date: selectedDateValue,
-                dateText: showDateText,
-                paymentMethod: document.getElementById('payment').value,
-                ticketQuantity: tickets,
-                totalPrice: totalPrice,
-                sendEmail: true //Script to send email
-            };
         
             try {
                 const response = await fetch(`${SCRIPT_URL}?v=${new Date().getTime()}`, {            
@@ -660,49 +844,15 @@
                 });
         
                 if (response.type === 'opaque') {
-                    alert('Booking successful! Thank you for your reservation.  You will receive a confirmation email shortly!!!');
+                    alert('Booking successful! Thank you for your reservation. You will receive a confirmation email shortly!!!');
                     document.getElementById('bookingForm').reset();
+                    updateBookingType();
                 }
             } catch (error) {
                 console.error('Error:', error);
                 alert('Unable to process booking. Please try again later.');
             } finally {
                 document.getElementById('loading').style.display = 'none';
-            }
-        }
-        
-        async function checkAvailability() {
-            try {
-                console.log('Checking availability...');
-                const response = await fetch(`${SCRIPT_URL}?v=${new Date().getTime()}`, {
-                    method: 'GET',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'text/plain;charset=utf-8',
-                    }
-                });
-                
-                // Since we're using no-cors mode, we won't get a JSON response
-                if (response.type === 'opaque') {
-                    console.log('Got opaque response - this is expected with no-cors');
-                    return;
-                }
-                
-            } catch (error) {
-                console.error('Detailed error:', error);
-                // Don't show the error to users, just show a friendly message
-                console.log('Could not load availability. Please refresh the page or try again later.');
-            }
-        }
-        
-        
-        function updateAvailability(show) {
-            const showSelect = document.getElementById('show');
-            for (let option of showSelect.options) {
-                if (option.value === show) {
-                    option.text += ' (House Full)';
-                    option.disabled = true;
-                }
             }
         }
         
@@ -716,11 +866,9 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             updateAvailableDates();
-            updatePaymentField();
-            updateTotalPrice(); // Initialize the total price display
-            document.getElementById('show').addEventListener('change', updateTotalPrice);
-            document.getElementById('payment').addEventListener('change', updatePaymentField);
+            updateTotalPrice();
             document.getElementById('email').addEventListener('input', validateEmail);
+            document.querySelectorAll('.radio-option')[0].classList.add('selected');
         });
         
     </script>
