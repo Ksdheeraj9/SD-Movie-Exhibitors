@@ -24,6 +24,7 @@
             height: auto;
             margin: 20px auto;
             display: block;
+            aspect-ratio: 1072 / 1350;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             object-fit: contain;
@@ -346,8 +347,8 @@
 
             const ticketCount = parseInt(document.getElementById('tickets').value) || 1;
             let price = 12.00; // default fallback
-            if (show === 'telugu') price = (ticketCount > 4) ? 12.00 : 10.00;
-            else price = (ticketCount > 4) ? 12.00 : 10.00;
+            if (show === 'telugu') price = (ticketCount > 4) ? 10.00 : 12.00;
+            else price = (ticketCount > 4) ? 10.00 : 12.00;
             return price;
         }
         
@@ -359,7 +360,7 @@
         const SHOW_DATES = [
             {
                 date: '2026-04-10',
-                label: 'Sunday, January 11, 2026',
+                label: 'Sunday, April 10, 2026',
                 //hindiShowTime: '2:00 PM',
                 teluguShowTime: '19:45 PM'
             }
