@@ -20,11 +20,13 @@
         }
         .poster {
             width: 100%;
-            max-width: 500px;
+            max-width: 940px;
+            height: auto;
             margin: 20px auto;
             display: block;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            object-fit: contain;
         }
         .form-group {
             margin-bottom: 20px;
@@ -208,7 +210,7 @@
            <!-- <h2>Movie Booking</h2>--> 
         </div>
         
-        <img src="https://raw.githubusercontent.com/Ksdheeraj9/SD-Movie-Exhibitors/refs/heads/main/poster.jpeg" alt="Movie Poster" class="poster">
+        <img src="https://raw.githubusercontent.com/Ksdheeraj9/SD-Movie-Exhibitors/refs/heads/main/poster.jpeg" alt="Movie Poster" class="poster" style="max-height:550px;object-fit:cover;">
         
         <form id="bookingForm" onsubmit="return handleSubmit(event)">
             <div class="form-group">
@@ -278,7 +280,7 @@
                 </div>
                 -->
                 <div class="ticket-price-info" id="pricePerTicket">
-                    Price per ticket: €12.00
+                    Early bird price per ticket: €12.00
                 </div>
                 <div class="total-price" id="totalPrice">
                     Total: €12.00
@@ -343,23 +345,23 @@
             //return 14.00; // default fallback
 
             const ticketCount = parseInt(document.getElementById('tickets').value) || 1;
-            let price = 12.00; // default fallback
-            if (show === 'telugu') price = (ticketCount > 4) ? 10.00 : 12.00;
-            else price = (ticketCount > 4) ? 10.00 : 12.00;
+            let price = 14.00; // default fallback
+            if (show === 'telugu') price = (ticketCount > 4) ? 12.00 : 14.00;
+            else price = (ticketCount > 4) ? 12.00 : 14.00;
             return price;
         }
         
         const BANK_DETAILS = {
-            name: 'SHIVA D. KAMMA',
-            iban: 'DE89 7004 0045 0830 6094 00',
-            bic: 'COBADEFFXXX'
+            name: 'SHIVA DHEERAJ KAMMA',
+            iban: 'DE35 1001 1001 2397 1806 51',
+            bic: 'NTSBDEB1XXX'
         };
         const SHOW_DATES = [
             {
-                date: '2026-04-10',
-                label: 'Sunday, April 10, 2026',
+                date: '2026-10-31',
+                label: 'Saturday, October 31, 2026',
                 //hindiShowTime: '2:00 PM',
-                teluguShowTime: '19:45 PM'
+                teluguShowTime: '11:15 AM'
             }
             
             /*
@@ -381,7 +383,7 @@
             const price = getTicketPrice();
             const totalPrice = (tickets * getTicketPrice()).toFixed(2);
             document.getElementById('totalPrice').textContent = `Total: €${totalPrice}`;
-            document.getElementById("pricePerTicket").textContent = `Price per ticket: €${getTicketPrice().toFixed(2)}`;
+            document.getElementById("pricePerTicket").textContent = `Early bird price per ticket: €${getTicketPrice().toFixed(2)}`;
         }
 
         // Function to update available dates in the dropdown
